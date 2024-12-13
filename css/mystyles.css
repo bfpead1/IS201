@@ -1,0 +1,73 @@
+body{
+    background-color: seagreen;
+}
+
+h1{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+p{
+    color: blue;
+    font-family: "Comic Sans MS";
+    font-size: 175%;
+    font-weight: bolder;
+    text-align: center;
+}
+
+ul{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+ol{
+    font-weight: lighter;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.common{
+    background-color: aliceblue;
+    border: 2px solid white;
+    position: absolute;
+    z-index: 2;
+}
+
+.header{
+    top: 5px;
+    left: 5px;
+    right: 350px;
+    height: 150px;
+    z-index: 2;
+    text-align: center;
+    color: rgb(120, 17, 17);
+    position: fixed;
+}
+
+.rightmenu{
+    top: 5px;
+    right: 5px;
+    width: 338px;
+    bottom: 50px;
+    position: fixed;
+}
+
+.leftmenu{
+    top: 160px;
+    left: 5px;
+    bottom: 50px;
+    width: 100px;
+}
+
+.footer{
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    height:24px;
+    color: lawngreen;
+    padding-top: 15px;
+    text-align: center;
+    position: fixed;
+}
+
+ol:hover{
+    background-color: aqua;
+}

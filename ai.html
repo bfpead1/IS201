@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <style>
+        body {
+            font-family: "Comic Sans MS";
+            text-align: center;
+            background-color: palegoldenrod;
+        }
+        .game-container {
+            background-color: lavenderblush;
+            border-radius: 10px;
+            padding: 20px;
+            display: inline-block;
+            margin-top: 50px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .word {
+            font-size: 30px;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+        .alphabet {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .alphabet button {
+            font-size: 18px;
+            padding: 10px;
+            margin: 5px;
+            border: 3px solid lightblue;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .alphabet button:disabled {
+            background-color: rgba(2, 0, 7, 0.589);
+            cursor: not-allowed;
+        }
+        .hangman {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .reset-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .reset-btn:hover {
+            background-color: yellowgreen;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Hangman</h1>
+    <div class="hangman" id="hangman">____</div>
+    <div class="word" id="word"></div>
+    <div class="message" id="message"></div>
+    <div class="alphabet" id="alphabet"></div>
+    <button class="reset-btn" id="resetBtn" onclick="startGame()">Start New Game</button>
+</div>
+
+<script>
+    const words = ['javascript', 'hangman', 'programming', 'developer', 'code', 'computer', 'jazz', 'Blakeshouldgetana'];
+    let selectedWord = '';
+    let displayedWord = '';
+    let wrongAttempts = 0;
+    let guessedLetters = [];
+    const maxAttempts = 6;
+
+    function startGame() {
+        // Reset the game variables
+        selectedWord = words[Math.floor(Math.random() * words.length)];
+        displayedWord = '_'.repeat(selectedWord.length);
+        wrongAttempts = 0;
+        guessedLetters = [];
+
+        // Update the UI
+        document.getElementById('hangman').textContent = '____';
+        document.getElementById('word').textContent = displayedWord;
+        document.getElementById('message').textContent = '';
+        document.getElementById('alphabet').innerHTML = '';
+
+        // Enable the alphabet buttons
+        const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        alphabet.forEach(letter => {
+            const button = document.createElement('button');
+            button.textContent = letter;
+            button.onclick = () => makeGuess(letter);
+            document.getElementById('alphabet').appendChild(button);
+        });
+    }
+
+    function makeGuess(letter) {
+        if (guessedLetters.includes(letter)) return; // Prevent re-guessing
+
+        guessedLetters.push(letter);
+        const indices = [];
+
+        // Check if the letter is in the word
+        for (let i = 0; i < selectedWord.length; i++) {
+            if (selectedWord[i] === letter) {
+                indices.push(i);
+            }
+        }
+
+        if (indices.length > 0) {
+            // Update the displayed word
+            displayedWord = displayedWord.split('');
+            indices.forEach(index => {
+                displayedWord[index] = letter;
+            });
+            displayedWord = displayedWord.join('');
+            document.getElementById('word').textContent = displayedWord;
+
+            // Check if the player has won
+            if (displayedWord === selectedWord) {
+                document.getElementById('message').textContent = 'You Win!';
+                endGame();
+            }
+        } else {
+            // Incorrect guess
+            wrongAttempts++;
+            document.getElementById('hangman').textContent = '____'.slice(0, maxAttempts - wrongAttempts);
+            if (wrongAttempts === maxAttempts) {
+                document.getElementById('message').textContent = 'Game Over! The word was ' + selectedWord;
+                endGame();
+            }
+        }
+
+        // Disable the guessed letter button
+        const buttons = document.getElementById('alphabet').getElementsByTagName('button');
+        for (let button of buttons) {
+            if (button.textContent === letter) {
+                button.disabled = true;
+            }
+        }
+    }
+
+    function endGame() {
+        const buttons = document.getElementById('alphabet').getElementsByTagName('button');
+        for (let button of buttons) {
+            button.disabled = true;
+        }
+    }
+
+    // Start the game when the page loads
+    window.onload = startGame;
+</script>
+
+</body>
+</html>
